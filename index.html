@@ -58,6 +58,8 @@
   .badge.design_in_progress { background: #1a2740; color: var(--accent); border-color: #2f4d7a; }
   .badge.draft { background: #221a40; color: var(--queued); border-color: #4a3a7a; }
   .badge.retired { background: #1a2030; color: var(--idle); border-color: #2a3348; text-decoration: line-through; }
+  .badge.published { background: #123528; color: var(--ok); border-color: #1f5a40; }
+  .badge.seven_mission_pack { background: #123528; color: var(--ok); border-color: #1f5a40; }
   .badge.empty { background: #1a2030; color: var(--idle); border-color: #2a3348; }
   .subs { display: grid; gap: 10px; margin-top: 8px; }
   .sub { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; background: #0e1420; }
@@ -101,7 +103,7 @@
 <body>
 <header>
   <h1>IRON / ULTIMATUM — Campaign Dashboard</h1>
-  <div class="sub">Published playable: empty (old four retired) · Active design pack M1–M7 (not Dock-published) · agent builds live</div>
+  <div class="sub">Published campaign: M1–M7 · Old four retired · Design-locked / not fully Dock-playable where noted</div>
   <div class="row" id="prPills">
     <a class="pill" href="https://github.com/astickleyid/iron_ultimatum/pull/1" target="_blank" rel="noopener" title="Combat controls + ControlGuide (Dock 0.1.71) — DRAFT, do not merge · waiting Austin playtest stick">PR #1 Combat</a>
     <a class="pill primary" href="https://github.com/astickleyid/iron_ultimatum/pull/2" target="_blank" rel="noopener" title="CampaignStory pack — M1/M2 lock, VO, scene scripts (DRAFT)">PR #2 Story</a>
@@ -127,7 +129,7 @@
     <div class="card-head">
       <div>
         <div class="title">Published / playable (current)</div>
-        <div class="meta">Austin 2026-10-07 · old four retired · archive kept · 7-mission board not Dock-shipped yet</div>
+        <div class="meta">Austin 2026-10-07 · published = M1–M7 · old four retired · design-locked / not fully Dock-playable where true</div>
       </div>
       <span class="badge not_started" id="playableBadge">empty</span>
     </div>
@@ -338,14 +340,25 @@ function renderPublishedPlayable(pp) {
   }
   const current = pp.current || [];
   const retired = pp.retiredFromCurrent || [];
-  const pack = pp.activeDesignPack || {};
   if (badgeEl) {
-    badgeEl.className = "badge " + (pp.status === "empty" ? "empty" : (pp.status || "not_started"));
+    const cls = pp.status === "seven_mission_pack" ? "done" : (pp.status === "empty" ? "empty" : (pp.status || "not_started"));
+    badgeEl.className = "badge " + cls;
     badgeEl.textContent = (pp.status || "unknown").replace(/_/g, " ");
   }
+  const dockLabel = (v) => {
+    if (v === true) return "Dock-playable";
+    if (v === "partial") return "partial Dock field only";
+    return "not fully Dock-playable";
+  };
   const currentHtml = current.length
-    ? current.map(x => `<div class="build done"><div><strong>${x.name || x.id}</strong></div>${badge(x.status || "done")}</div>`).join("")
-    : `<div class="build"><div><strong>None</strong><div class="meta">No current published/playable ops — pending 7-mission board ship</div></div><span class="badge empty">empty</span></div>`;
+    ? current.map(x => `<div class="build done">
+        <div>
+          <strong>${x.id || ""} — ${x.name || ""}</strong>
+          <div class="meta">${dockLabel(x.dockPlayable)} · ${x.note || ""}</div>
+        </div>
+        ${badge(x.status || "published")}
+      </div>`).join("")
+    : `<div class="build"><div><strong>None</strong></div><span class="badge empty">empty</span></div>`;
   const retiredHtml = retired.map(x => `
     <div class="build retired">
       <div>
@@ -354,16 +367,8 @@ function renderPublishedPlayable(pp) {
       </div>
       ${badge("retired")}
     </div>`).join("");
-  const packM = (pack.missions || []).map(m => `<span class="chip">${m.id} ${m.name || ""}</span>`).join("");
-  const packHtml = `<div class="build design_in_progress">
-      <div>
-        <strong>Active design pack</strong>
-        <div class="meta">${pack.note || "M1–M7 design authoring"} · Dock-published: ${pack.dockPublished ? "yes" : "no"}</div>
-        <div class="chips">${packM}</div>
-      </div>
-      ${badge(pack.status || "design_in_progress")}
-    </div>`;
-  el.innerHTML = currentHtml + retiredHtml + packHtml;
+  el.innerHTML = `<div class="meta" style="margin-bottom:8px">Published campaign pack</div>` + currentHtml
+    + `<div class="meta" style="margin:12px 0 8px">Retired from published only</div>` + retiredHtml;
   if (note) note.innerHTML = `<strong>${pp.note || ""}</strong> ${pp.archiveNote || ""}`;
 }
 
