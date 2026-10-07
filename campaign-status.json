@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-07T01:17:30-04:00",
+  "updated": "2026-10-07T04:29:43-04:00",
   "pack": "7-mission dense + M1/M2 call lock",
   "liveDashboardUrl": "https://astickleyid.github.io/iron-campaign-dashboard/",
   "agentBuilds": [
@@ -363,7 +363,79 @@
   },
   "notes": {
     "m1": "M1 Dock agent owns The Drop field slice (in progress). Separate from combat Dock 0.1.71.",
-    "combatDock": "Dock 0.1.71 tip 6428b6fc open on Mac Studio \u2014 combat PR #1, not M1."
+    "combatDock": "Dock 0.1.71 tip 6428b6fc open on Mac Studio \u2014 combat PR #1, not M1.",
+    "publishedPlayable": "Empty pending 7-mission board ship. Ghost Signal / Space Anchor / Chronoweave / Midtown Convoy retired from CURRENT listings only."
   },
-  "updatedNote": "Campaign review: Pages live; M1 Dock Pass1 in progress; combat Dock 0.1.71 open"
+  "updatedNote": "Austin voice 2026-10-07: retire Ghost Signal, Space Anchor, Chronoweave, Midtown Convoy from current published/playable listings. Published playable empty pending 7-mission board ship.",
+  "publishedPlayable": {
+    "status": "empty",
+    "note": "Current published/playable set is empty pending the 7-mission board ship. Old four retired from CURRENT listings only \u2014 archive/historical untouched.",
+    "current": [],
+    "retiredFromCurrent": [
+      {
+        "id": "ghost-signal",
+        "name": "Ghost Signal",
+        "status": "retired",
+        "was": "shipped_playable / TimelineCampaign",
+        "note": "Retired from current published/playable listings (Austin 2026-10-07). Historical/archive kept."
+      },
+      {
+        "id": "space-anchor",
+        "name": "Space Anchor",
+        "status": "retired",
+        "was": "shipped_playable / TimelineCampaign",
+        "note": "Retired from current published/playable listings (Austin 2026-10-07). Historical/archive kept."
+      },
+      {
+        "id": "chronoweave",
+        "name": "Chronoweave",
+        "status": "retired",
+        "was": "shipped_playable / NanotechOperation segments",
+        "note": "Retired from current published/playable listings (Austin 2026-10-07). Historical/archive kept. Nanotech carry still pending Austin go-ahead on audit list."
+      },
+      {
+        "id": "midtown-convoy",
+        "name": "Midtown Convoy",
+        "status": "retired",
+        "was": "shipped_playable / MidtownConvoy + Interdictor",
+        "note": "Retired from current published/playable listings (Austin 2026-10-07). Historical/archive kept."
+      }
+    ],
+    "activeDesignPack": {
+      "status": "design_authoring",
+      "dockPublished": false,
+      "missions": [
+        {
+          "id": "M1",
+          "name": "The Drop"
+        },
+        {
+          "id": "M2",
+          "name": "The Frame"
+        },
+        {
+          "id": "M3",
+          "name": "The Sensor"
+        },
+        {
+          "id": "M4",
+          "name": "Walls"
+        },
+        {
+          "id": "M5",
+          "name": "Wrong Enemy"
+        },
+        {
+          "id": "M6",
+          "name": "Nephilim / The Unborn"
+        },
+        {
+          "id": "M7",
+          "name": "The Door"
+        }
+      ],
+      "note": "Active design pack M1 The Drop \u2026 M7 The Door \u2014 not Dock-published yet as the playable campaign board."
+    },
+    "archiveNote": "Do not delete archived/historical content (archive/, shelved/, old CampaignBoard docs)."
+  }
 }
