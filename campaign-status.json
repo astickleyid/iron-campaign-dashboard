@@ -1,16 +1,51 @@
 {
-  "updated": "2026-10-07T04:31:00-04:00",
-  "pack": "7-mission dense + M1/M2 call lock",
+  "updated": "2026-10-07T04:28:00-04:00",
+  "pack": "7-mission pack is the live published campaign (design-locked 2026-10-07)",
+  "publishedPlayable": {
+    "status": "published",
+    "board": "live",
+    "listing": "Published campaign: M1 The Drop, M2 The Frame, M3 The Sensor, M4 Walls, M5 Wrong Enemy, M6 Nephilim / The Unborn, M7 The Door. Design-locked; M1 Pass 1 plant-grid exists on main (story beats off); M2\u2013M7 field slices not fully Dock-shipped; Ops UI wiring in progress. Ghost Signal, Space Anchor, Chronoweave, and Midtown Convoy are retired from the published board.",
+    "missions": [
+      {
+        "id": "M1",
+        "name": "The Drop"
+      },
+      {
+        "id": "M2",
+        "name": "The Frame"
+      },
+      {
+        "id": "M3",
+        "name": "The Sensor"
+      },
+      {
+        "id": "M4",
+        "name": "Walls"
+      },
+      {
+        "id": "M5",
+        "name": "Wrong Enemy"
+      },
+      {
+        "id": "M6",
+        "name": "Nephilim / The Unborn"
+      },
+      {
+        "id": "M7",
+        "name": "The Door"
+      }
+    ],
+    "retiredFromPublishedBoard": [
+      "Ghost Signal",
+      "Space Anchor",
+      "Chronoweave",
+      "Midtown Convoy"
+    ],
+    "honesty": "Design-locked; M1 Pass 1 plant-grid exists on main (story beats off); M2\u2013M7 field slices not fully Dock-shipped; Ops UI wiring in progress.",
+    "kept": "TimelineCampaign, MidtownConvoy, NanotechOperation Chronoweave paths, probes, Documentation/MidtownConvoy, CampaignReview visuals, archive/, and shelved/ stay. They are not the published board."
+  },
   "liveDashboardUrl": "https://astickleyid.github.io/iron-campaign-dashboard/",
   "agentBuilds": [
-    {
-      "id": "m1-dock-field",
-      "label": "M1 Dock \u2014 The Drop field",
-      "status": "in_progress",
-      "owner": "M1 Dock",
-      "note": "Pass 1 plant/grid \u00b7 full M1.1\u2013M1.4 phased \u00b7 bc-5a626cf0 \u00b7 tip 6428b6fc \u00b7 draft PR pending \u00b7 Campaign review before Austin",
-      "mission": "M1"
-    },
     {
       "id": "build-m1-m2-call-lock",
       "name": "Mission 1 The Drop + Mission 2 The Frame",
@@ -30,10 +65,9 @@
         "M2.3",
         "M2.4"
       ],
-      "focus": "M1/M2 call lock \u2014 design done (field slice now owned by M1 Dock)",
+      "focus": "M1 Drop + M2 Frame call lock written into pack",
       "started": "2026-10-07T00:51:00-04:00",
-      "finished": "2026-10-07T00:55:00-04:00",
-      "note": "Design authoring done; live Dock field work is m1-dock-field"
+      "finished": "2026-10-07T00:55:00-04:00"
     },
     {
       "id": "dialogue-draft-m1-m2",
@@ -63,7 +97,7 @@
       "id": "scene-scripts-m3-m7",
       "name": "scene-scripts-m3-m7",
       "agent": "Campaign",
-      "status": "waiting_austin_proof",
+      "status": "done",
       "missions": [
         "M3",
         "M4",
@@ -71,9 +105,10 @@
         "M6",
         "M7"
       ],
-      "focus": "18 subs authored locally; combat flags held",
-      "note": "Desktop+GS only, NOT on PR #2; combat flags held; est ~258 min / 4.3 hrs",
-      "estimateMinutes": 258
+      "focus": "18 subs signed off 2026-10-07; PR #1 combat-gap callouts in the script",
+      "note": "On PR #2; Austin signed off 2026-10-07; est ~258 min / 4.3 hrs",
+      "estimateMinutes": 258,
+      "finished": "2026-10-07T01:25:00-04:00"
     },
     {
       "id": "ui-campaign-copy-scrub",
@@ -110,10 +145,9 @@
       "id": "dashboard-keeper",
       "name": "Campaign dashboard keeper",
       "agent": "Campaign",
-      "status": "done",
+      "status": "in_progress",
       "agentId": "7610954e-d7f6-4abe-be04-a4b0ba0ef127",
-      "focus": "Live status + public static dashboard",
-      "note": "Live https://astickleyid.github.io/iron-campaign-dashboard/ \u00b7 free Pages \u00b7 Campaign verified URL+JSON"
+      "focus": "Live status + public static dashboard"
     }
   ],
   "pullRequests": [
@@ -134,8 +168,8 @@
       "state": "OPEN",
       "isDraft": true,
       "branch": "cursor/campaign-story-parents-son-spine-d2a9",
-      "blockedOn": "Docs sync of dashboard + status; M3\u2013M7 scripts stay Desktop+GS only",
-      "austinNeeds": "Review CampaignStory pack; scene-scripts-m3-m7 NOT on this PR"
+      "blockedOn": "Austin review of draft CampaignStory pack. Do not merge.",
+      "austinNeeds": "Review draft PR #2; scene-scripts-m3-m7 is on this PR with PR #1 combat-gap callouts; do not merge"
     },
     {
       "number": 3,
@@ -191,15 +225,15 @@
   "missions": [
     {
       "id": "M1",
-      "status": "in_progress",
+      "status": "done",
       "subs": [
         {
           "id": "M1.1",
-          "status": "in_progress"
+          "status": "done"
         },
         {
           "id": "M1.2",
-          "status": "in_progress"
+          "status": "done"
         },
         {
           "id": "M1.3",
@@ -209,8 +243,7 @@
           "id": "M1.4",
           "status": "done"
         }
-      ],
-      "note": "Design call-lock done; M1 Dock owns field slice (in progress). Combat 0.1.71 is separate."
+      ]
     },
     {
       "id": "M2",
@@ -236,108 +269,108 @@
     },
     {
       "id": "M3",
-      "status": "waiting_proof",
-      "note": "Scene scripts authored locally; waiting Austin proof",
+      "status": "done",
+      "note": "Published campaign. Design-locked; field slice not fully Dock-shipped. Scene scripts signed off 2026-10-07; on PR #2.",
       "subs": [
         {
           "id": "M3.1",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M3.2",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M3.3",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M3.4",
-          "status": "waiting_proof"
+          "status": "done"
         }
       ]
     },
     {
       "id": "M4",
-      "status": "waiting_proof",
-      "note": "Scene scripts authored locally; waiting Austin proof",
+      "status": "done",
+      "note": "Published campaign. Design-locked; field slice not fully Dock-shipped. Scene scripts signed off 2026-10-07; on PR #2.",
       "subs": [
         {
           "id": "M4.1",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M4.2",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M4.3",
-          "status": "waiting_proof"
+          "status": "done"
         }
       ]
     },
     {
       "id": "M5",
-      "status": "waiting_proof",
-      "note": "Scene scripts authored locally; waiting Austin proof",
+      "status": "done",
+      "note": "Published campaign. Design-locked; field slice not fully Dock-shipped. Scene scripts signed off 2026-10-07; on PR #2.",
       "subs": [
         {
           "id": "M5.1",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M5.2",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M5.3",
-          "status": "waiting_proof"
+          "status": "done"
         }
       ]
     },
     {
       "id": "M6",
-      "status": "waiting_proof",
-      "note": "Scene scripts authored locally; waiting Austin proof",
+      "status": "done",
+      "note": "Published campaign. Design-locked; field slice not fully Dock-shipped. Scene scripts signed off 2026-10-07; on PR #2.",
       "subs": [
         {
           "id": "M6.1",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M6.2",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M6.3",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M6.4",
-          "status": "waiting_proof"
+          "status": "done"
         }
       ]
     },
     {
       "id": "M7",
-      "status": "waiting_proof",
-      "note": "Scene scripts authored locally; waiting Austin proof",
+      "status": "done",
+      "note": "Published campaign. Design-locked; field slice not fully Dock-shipped. Scene scripts signed off 2026-10-07; on PR #2.",
       "subs": [
         {
           "id": "M7.1",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M7.2",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M7.3",
-          "status": "waiting_proof"
+          "status": "done"
         },
         {
           "id": "M7.4",
-          "status": "waiting_proof"
+          "status": "done"
         }
       ]
     }
@@ -356,136 +389,12 @@
   "shelved": {
     "path": "shelved/",
     "note": "Inactive older direction \u2014 combat feel, OWNER stub, source-docs. Not deleted.",
-    "active_campaign": "7-mission pack; Nephilim/The Unborn design names; dead-man Tony; Rhodey stand-in; M1 Drop + M2 Frame call-locked"
+    "active_campaign": "Published campaign: M1 The Drop, M2 The Frame, M3 The Sensor, M4 Walls, M5 Wrong Enemy, M6 Nephilim / The Unborn, M7 The Door. Design-locked; M1 Pass 1 plant-grid exists on main (story beats off); M2\u2013M7 field slices not fully Dock-shipped; Ops UI wiring in progress."
   },
-  "reporting": {
-    "rule": "Campaign reviews first. Escalate bigger/risky/ambiguous to Austin only. Trivial dashboard syncs \u2192 Campaign only (no Austin ping)."
-  },
-  "notes": {
-    "m1": "M1 Dock agent owns The Drop field slice (in progress). Separate from combat Dock 0.1.71.",
-    "combatDock": "Dock 0.1.71 tip 6428b6fc open on Mac Studio \u2014 combat PR #1, not M1.",
-    "publishedPlayable": "Published = M1\u2013M7. Retired from published only: Ghost Signal, Space Anchor, Chronoweave, Midtown Convoy. Design-locked / not fully Dock-playable where true."
-  },
-  "updatedNote": "Austin correction: M1\u2013M7 is the live published campaign pack on the public dashboard. Ghost Signal / Space Anchor / Chronoweave / Midtown Convoy remain retired from published only.",
-  "publishedPlayable": {
-    "status": "seven_mission_pack",
-    "note": "Live published campaign on the public dashboard is the 7-mission pack (Austin 2026-10-07 correction). Design-locked / not fully Dock-playable where noted.",
-    "current": [
-      {
-        "id": "M1",
-        "name": "The Drop",
-        "status": "published",
-        "dockPlayable": "partial",
-        "note": "Design call-locked; M1 Dock field slice in progress \u2014 not fully Dock-playable as full mission board yet"
-      },
-      {
-        "id": "M2",
-        "name": "The Frame",
-        "status": "published",
-        "dockPlayable": false,
-        "note": "Design call-locked; not fully Dock-playable"
-      },
-      {
-        "id": "M3",
-        "name": "The Sensor",
-        "status": "published",
-        "dockPlayable": false,
-        "note": "Design pack; not Dock-playable"
-      },
-      {
-        "id": "M4",
-        "name": "Walls",
-        "status": "published",
-        "dockPlayable": false,
-        "note": "Design pack; not Dock-playable"
-      },
-      {
-        "id": "M5",
-        "name": "Wrong Enemy",
-        "status": "published",
-        "dockPlayable": false,
-        "note": "Design pack; not Dock-playable"
-      },
-      {
-        "id": "M6",
-        "name": "Nephilim / The Unborn",
-        "status": "published",
-        "dockPlayable": false,
-        "note": "Design pack; not Dock-playable"
-      },
-      {
-        "id": "M7",
-        "name": "The Door",
-        "status": "published",
-        "dockPlayable": false,
-        "note": "Design pack; not Dock-playable"
-      }
-    ],
-    "retiredFromCurrent": [
-      {
-        "id": "ghost-signal",
-        "name": "Ghost Signal",
-        "status": "retired",
-        "was": "shipped_playable / TimelineCampaign",
-        "note": "Retired from published only. Archive/historical kept."
-      },
-      {
-        "id": "space-anchor",
-        "name": "Space Anchor",
-        "status": "retired",
-        "was": "shipped_playable / TimelineCampaign",
-        "note": "Retired from published only. Archive/historical kept."
-      },
-      {
-        "id": "chronoweave",
-        "name": "Chronoweave",
-        "status": "retired",
-        "was": "shipped_playable / NanotechOperation segments",
-        "note": "Retired from published only. Archive/historical kept."
-      },
-      {
-        "id": "midtown-convoy",
-        "name": "Midtown Convoy",
-        "status": "retired",
-        "was": "shipped_playable / MidtownConvoy + Interdictor",
-        "note": "Retired from published only. Archive/historical kept."
-      }
-    ],
-    "activeDesignPack": {
-      "status": "published_design",
-      "dockPublished": false,
-      "missions": [
-        {
-          "id": "M1",
-          "name": "The Drop"
-        },
-        {
-          "id": "M2",
-          "name": "The Frame"
-        },
-        {
-          "id": "M3",
-          "name": "The Sensor"
-        },
-        {
-          "id": "M4",
-          "name": "Walls"
-        },
-        {
-          "id": "M5",
-          "name": "Wrong Enemy"
-        },
-        {
-          "id": "M6",
-          "name": "Nephilim / The Unborn"
-        },
-        {
-          "id": "M7",
-          "name": "The Door"
-        }
-      ],
-      "note": "Same as published current \u2014 M1 The Drop \u2026 M7 The Door. Not a separate empty placeholder."
-    },
-    "archiveNote": "Do not delete archived/historical content (archive/, shelved/, old CampaignBoard docs)."
+  "mirroredFrom": {
+    "repo": "astickleyid/iron_ultimatum",
+    "ref": "main",
+    "commit": "539be08c",
+    "pr": 17
   }
 }

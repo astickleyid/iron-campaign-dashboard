@@ -57,10 +57,6 @@
   .build.waiting_proof, .build.waiting_austin_proof { border-color: #6a4a1a; box-shadow: inset 3px 0 0 var(--warn); }
   .badge.design_in_progress { background: #1a2740; color: var(--accent); border-color: #2f4d7a; }
   .badge.draft { background: #221a40; color: var(--queued); border-color: #4a3a7a; }
-  .badge.retired { background: #1a2030; color: var(--idle); border-color: #2a3348; text-decoration: line-through; }
-  .badge.published { background: #123528; color: var(--ok); border-color: #1f5a40; }
-  .badge.seven_mission_pack { background: #123528; color: var(--ok); border-color: #1f5a40; }
-  .badge.empty { background: #1a2030; color: var(--idle); border-color: #2a3348; }
   .subs { display: grid; gap: 10px; margin-top: 8px; }
   .sub { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; background: #0e1420; }
   .sub-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
@@ -103,7 +99,7 @@
 <body>
 <header>
   <h1>IRON / ULTIMATUM — Campaign Dashboard</h1>
-  <div class="sub">Published campaign: M1–M7 · Old four retired · Design-locked / not fully Dock-playable where noted</div>
+  <div class="sub">Published campaign: M1 The Drop, M2 The Frame, M3 The Sensor, M4 Walls, M5 Wrong Enemy, M6 Nephilim / The Unborn, M7 The Door. Design-locked; M1 Pass 1 plant-grid exists on main (story beats off); M2–M7 field slices not fully Dock-shipped; Ops UI wiring in progress. Ghost Signal, Space Anchor, Chronoweave, and Midtown Convoy are retired from the published board.</div>
   <div class="row" id="prPills">
     <a class="pill" href="https://github.com/astickleyid/iron_ultimatum/pull/1" target="_blank" rel="noopener" title="Combat controls + ControlGuide (Dock 0.1.71) — DRAFT, do not merge · waiting Austin playtest stick">PR #1 Combat</a>
     <a class="pill primary" href="https://github.com/astickleyid/iron_ultimatum/pull/2" target="_blank" rel="noopener" title="CampaignStory pack — M1/M2 lock, VO, scene scripts (DRAFT)">PR #2 Story</a>
@@ -124,18 +120,13 @@
   </div>
 </header>
 <main class="grid">
-
-  <section class="card" id="publishedPlayableCard">
+  <section class="card">
     <div class="card-head">
       <div>
-        <div class="title">Published / playable (current)</div>
-        <div class="meta">Austin 2026-10-07 · published = M1–M7 · old four retired · design-locked / not fully Dock-playable where true</div>
+        <div class="title">Published campaign</div>
+        <div class="meta" id="publishedBoard">Published campaign: M1 The Drop, M2 The Frame, M3 The Sensor, M4 Walls, M5 Wrong Enemy, M6 Nephilim / The Unborn, M7 The Door. Design-locked; M1 Pass 1 plant-grid exists on main (story beats off); M2–M7 field slices not fully Dock-shipped; Ops UI wiring in progress. Ghost Signal, Space Anchor, Chronoweave, and Midtown Convoy are retired from the published board.</div>
       </div>
-      <span class="badge not_started" id="playableBadge">empty</span>
-    </div>
-    <div class="card-body">
-      <div class="builds" id="publishedPlayable"></div>
-      <div class="note" id="playableNote">Waiting for publishedPlayable in campaign-status.json…</div>
+      <span class="badge done">published</span>
     </div>
   </section>
 
@@ -177,7 +168,6 @@
     </div>
     <div class="card-body">
       <div class="note"><strong>Active:</strong> FULL-MISSION-SET · STORY-BIBLE · BEAT-SHEET · README · DEEPEN-NOTES · this dashboard · campaign-status.json<br>
-      <strong>M1 note:</strong> M1 Dock owns The Drop field slice (in progress). Dock 0.1.71 tip 6428b6fc = combat on Mac Studio, not M1.<br>
       <strong>Call-locked spine:</strong> Nephilim / The Unborn (design names; placeholders until M6.2 / M6.3) · dead-man Tony · Rhodey stand-in · M1 The Drop · M2 The Frame</div>
       <ul style="margin:8px 0 0 18px;line-height:1.5;color:var(--muted);font-size:.9rem">
         <li><code>shelved/00-SHELF-NOTE.md</code> — shelf rules</li>
@@ -194,7 +184,7 @@
         <div class="title">Story threads</div>
         <div class="meta">Nephilim (M6.2) · The Unborn (M6.3) · codenames before — Government · Terrorists · Tony</div>
       </div>
-      <span class="badge design" id="packBadge">design authoring</span>
+      <span class="badge design" id="packBadge">published</span>
     </div>
     <div class="card-body threads" id="threads"></div>
   </section>
@@ -236,11 +226,23 @@
 </main>
 <script>
 const DATA = {
-  updated: "2026-10-07",
+  updated: "2026-10-07T04:28:00-04:00",
+  publishedPlayable: {
+    listing: "Published campaign: M1 The Drop, M2 The Frame, M3 The Sensor, M4 Walls, M5 Wrong Enemy, M6 Nephilim / The Unborn, M7 The Door. Design-locked; M1 Pass 1 plant-grid exists on main (story beats off); M2–M7 field slices not fully Dock-shipped; Ops UI wiring in progress. Ghost Signal, Space Anchor, Chronoweave, and Midtown Convoy are retired from the published board.",
+    missions: [
+      { id: "M1", name: "The Drop" },
+      { id: "M2", name: "The Frame" },
+      { id: "M3", name: "The Sensor" },
+      { id: "M4", name: "Walls" },
+      { id: "M5", name: "Wrong Enemy" },
+      { id: "M6", name: "Nephilim / The Unborn" },
+      { id: "M7", name: "The Door" }
+    ],
+    retiredFromPublishedBoard: ["Ghost Signal", "Space Anchor", "Chronoweave", "Midtown Convoy"]
+  },
   agentBuilds: [],
   pullRequests: [],
   liveDashboardUrl: null,
-  publishedPlayable: null,
   threads: [
     { id: "nephilim", name: "Nephilim", blurb: "Design name only until reveal. In-game: the entities / codenames. True name player-visible at M6.2.", status: "not_started", unlock: "M6.2 name reveal" },
     { id: "unborn", name: "The Unborn", blurb: "Design name only until reveal. In-game: the thing they fear / wrong enemy. True name player-visible at M6.3.", status: "not_started", unlock: "M6.3 name reveal" },
@@ -325,51 +327,6 @@ const DATA = {
 function badge(status) {
   const s = status || "not_started";
   return `<span class="badge ${s}">${String(s).replace(/_/g, " ")}</span>`;
-}
-
-
-function renderPublishedPlayable(pp) {
-  const el = document.getElementById("publishedPlayable");
-  const note = document.getElementById("playableNote");
-  const badgeEl = document.getElementById("playableBadge");
-  if (!el) return;
-  if (!pp) {
-    el.innerHTML = "";
-    if (note) note.textContent = "No publishedPlayable block in campaign-status.json.";
-    return;
-  }
-  const current = pp.current || [];
-  const retired = pp.retiredFromCurrent || [];
-  if (badgeEl) {
-    const cls = pp.status === "seven_mission_pack" ? "done" : (pp.status === "empty" ? "empty" : (pp.status || "not_started"));
-    badgeEl.className = "badge " + cls;
-    badgeEl.textContent = (pp.status || "unknown").replace(/_/g, " ");
-  }
-  const dockLabel = (v) => {
-    if (v === true) return "Dock-playable";
-    if (v === "partial") return "partial Dock field only";
-    return "not fully Dock-playable";
-  };
-  const currentHtml = current.length
-    ? current.map(x => `<div class="build done">
-        <div>
-          <strong>${x.id || ""} — ${x.name || ""}</strong>
-          <div class="meta">${dockLabel(x.dockPlayable)} · ${x.note || ""}</div>
-        </div>
-        ${badge(x.status || "published")}
-      </div>`).join("")
-    : `<div class="build"><div><strong>None</strong></div><span class="badge empty">empty</span></div>`;
-  const retiredHtml = retired.map(x => `
-    <div class="build retired">
-      <div>
-        <strong>${x.name || x.id}</strong>
-        <div class="meta">Was: ${x.was || "—"} · ${x.note || ""}</div>
-      </div>
-      ${badge("retired")}
-    </div>`).join("");
-  el.innerHTML = `<div class="meta" style="margin-bottom:8px">Published campaign pack</div>` + currentHtml
-    + `<div class="meta" style="margin:12px 0 8px">Retired from published only</div>` + retiredHtml;
-  if (note) note.innerHTML = `<strong>${pp.note || ""}</strong> ${pp.archiveNote || ""}`;
 }
 
 function renderPullRequests(prs) {
@@ -479,7 +436,6 @@ function renderMissions(missions) {
 function applyStatusPayload(payload) {
   if (!payload) return;
   if (payload.pullRequests) DATA.pullRequests = payload.pullRequests;
-  if (payload.publishedPlayable) DATA.publishedPlayable = payload.publishedPlayable;
   applyLiveUrl(payload.liveDashboardUrl || null);
   if (payload.agentBuilds) DATA.agentBuilds = payload.agentBuilds;
   if (payload.threads) {
@@ -501,6 +457,7 @@ function applyStatusPayload(payload) {
     // also filter M4.4 if still in embedded
     DATA.missions = DATA.missions.map(m => m.id !== "M4" ? m : ({ ...m, subs: m.subs.filter(s => s.id !== "M4.4") }));
   }
+  if (payload.publishedPlayable) DATA.publishedPlayable = payload.publishedPlayable;
   if (payload.updated) DATA.updated = payload.updated;
   document.getElementById("statusNote").innerHTML =
     `Live status loaded · last updated <strong>${DATA.updated}</strong>. Agent builds + mission progress come from <code>campaign-status.json</code>.`;
@@ -523,7 +480,20 @@ async function loadLiveStatus() {
   render();
 }
 
+function renderPublished(pub) {
+  const el = document.getElementById("publishedBoard");
+  if (!el || !pub) return;
+  if (pub.listing) {
+    el.textContent = pub.listing;
+    return;
+  }
+  const names = (pub.missions || []).map(m => `${m.id} ${m.name}`).join(", ");
+  const retired = (pub.retiredFromPublishedBoard || []).join(", ");
+  el.textContent = `Published campaign: ${names}. ${pub.honesty || ""} Retired from the published board: ${retired}.`;
+}
+
 function render() {
+  renderPublished(DATA.publishedPlayable);
   renderBuilds(DATA.agentBuilds);
   renderPullRequests(DATA.pullRequests || []);
   renderThreads(DATA.threads);
