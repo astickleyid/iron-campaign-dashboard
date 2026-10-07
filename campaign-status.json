@@ -1,0 +1,350 @@
+{
+  "updated": "2026-10-07T01:14:30-04:00",
+  "pack": "7-mission dense + M1/M2 call lock",
+  "liveDashboardUrl": "https://astickleyid.github.io/iron-campaign-dashboard/",
+  "agentBuilds": [
+    {
+      "id": "build-m1-m2-call-lock",
+      "name": "Mission 1 The Drop + Mission 2 The Frame",
+      "agent": "Campaign executor",
+      "status": "done",
+      "missions": [
+        "M1",
+        "M2"
+      ],
+      "subs": [
+        "M1.1",
+        "M1.2",
+        "M1.3",
+        "M1.4",
+        "M2.1",
+        "M2.2",
+        "M2.3",
+        "M2.4"
+      ],
+      "focus": "M1 Drop + M2 Frame call lock written into pack",
+      "started": "2026-10-07T00:51:00-04:00",
+      "finished": "2026-10-07T00:55:00-04:00"
+    },
+    {
+      "id": "dialogue-draft-m1-m2",
+      "name": "dialogue-draft-m1-m2",
+      "agent": "Campaign",
+      "status": "done",
+      "missions": [
+        "M1",
+        "M2"
+      ],
+      "focus": "VO / dialogue draft for M1\u2013M2",
+      "note": "On PR #2"
+    },
+    {
+      "id": "scene-scripts-m1-m2",
+      "name": "scene-scripts-m1-m2",
+      "agent": "Campaign",
+      "status": "done",
+      "missions": [
+        "M1",
+        "M2"
+      ],
+      "focus": "Scene scripts M1\u2013M2",
+      "note": "On PR #2"
+    },
+    {
+      "id": "scene-scripts-m3-m7",
+      "name": "scene-scripts-m3-m7",
+      "agent": "Campaign",
+      "status": "waiting_austin_proof",
+      "missions": [
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7"
+      ],
+      "focus": "18 subs authored locally; combat flags held",
+      "note": "Desktop+GS only, NOT on PR #2; combat flags held; est ~258 min / 4.3 hrs",
+      "estimateMinutes": 258
+    },
+    {
+      "id": "ui-campaign-copy-scrub",
+      "name": "Ops UI campaign copy scrub",
+      "agent": "UI Campaign Copy",
+      "task": "Ops UI: wire M1/M2 live; old missions \u2192 Test Run mode; keep art/icons",
+      "status": "done",
+      "cloudAgent": "bc-c3608e03-1955-5007-92a1-1be46650970c",
+      "started": "2026-10-07T00:56:00-04:00",
+      "scopeNote": "ops menus/terminals/HUD only; no art delete; no combat",
+      "note": "PR #3 draft; waiting Austin review/ship"
+    },
+    {
+      "id": "controller-layout-ui",
+      "name": "DualSense ControlGuide UI",
+      "agent": "Controller Layout UI",
+      "task": "DualSense layout + context prompts + remap + press-any-skip (ControlGuide)",
+      "status": "done",
+      "cloudAgent": "bc-7288dde1-f65f-58ea-97a4-6ac9fb84dedb",
+      "started": "2026-10-07T00:57:30-04:00",
+      "note": "PR #4 draft; not Unity-playtested"
+    },
+    {
+      "id": "iron-combat-pr1",
+      "name": "Combat controls + ControlGuide (PR #1)",
+      "agent": "Combat",
+      "status": "in_progress",
+      "focus": "Dock 0.1.71 tip 6428b6fc; waiting Austin playtest stick",
+      "note": "waiting Austin playtest stick; no Phase 2/3",
+      "dock": "0.1.71",
+      "tip": "6428b6fc"
+    },
+    {
+      "id": "dashboard-keeper",
+      "name": "Campaign dashboard keeper",
+      "agent": "Campaign",
+      "status": "in_progress",
+      "agentId": "7610954e-d7f6-4abe-be04-a4b0ba0ef127",
+      "focus": "Live status + public static dashboard"
+    }
+  ],
+  "pullRequests": [
+    {
+      "number": 1,
+      "title": "Combat controls + ControlGuide (Dock 0.1.71) \u2014 DRAFT, do not merge",
+      "url": "https://github.com/astickleyid/iron_ultimatum/pull/1",
+      "state": "OPEN",
+      "isDraft": true,
+      "branch": "cursor/combat-readability-64-fa59",
+      "blockedOn": "Austin playtest stick (Dock 0.1.71 tip 6428b6fc)",
+      "austinNeeds": "Playtest combat stick; do not merge; no Phase 2/3"
+    },
+    {
+      "number": 2,
+      "title": "CampaignStory pack \u2014 M1/M2 lock, VO, scene scripts (DRAFT)",
+      "url": "https://github.com/astickleyid/iron_ultimatum/pull/2",
+      "state": "OPEN",
+      "isDraft": true,
+      "branch": "cursor/campaign-story-parents-son-spine-d2a9",
+      "blockedOn": "Docs sync of dashboard + status; M3\u2013M7 scripts stay Desktop+GS only",
+      "austinNeeds": "Review CampaignStory pack; scene-scripts-m3-m7 NOT on this PR"
+    },
+    {
+      "number": 3,
+      "title": "Ops UI \u2014 The Drop / The Frame board + Legacy Test Suite (DRAFT)",
+      "url": "https://github.com/astickleyid/iron_ultimatum/pull/3",
+      "state": "OPEN",
+      "isDraft": true,
+      "branch": "cursor/ops-ui-campaign-board-970c",
+      "blockedOn": "Austin review/ship",
+      "austinNeeds": "Review Ops UI copy scrub; draft \u2014 do not merge until ready"
+    },
+    {
+      "number": 4,
+      "title": "DualSense ControlGuide \u2014 remap, context prompts, boot skip (DRAFT)",
+      "url": "https://github.com/astickleyid/iron_ultimatum/pull/4",
+      "state": "OPEN",
+      "isDraft": true,
+      "branch": "cursor/dualsense-control-guide-dedb",
+      "blockedOn": "Not Unity-playtested",
+      "austinNeeds": "Unity playtest DualSense ControlGuide before ship"
+    }
+  ],
+  "threads": [
+    {
+      "id": "nephilim",
+      "status": "not_started"
+    },
+    {
+      "id": "unborn",
+      "status": "not_started"
+    },
+    {
+      "id": "government",
+      "status": "not_started"
+    },
+    {
+      "id": "terrorists",
+      "status": "not_started"
+    },
+    {
+      "id": "tony",
+      "status": "in_progress"
+    },
+    {
+      "id": "frame",
+      "status": "in_progress"
+    },
+    {
+      "id": "sensor",
+      "status": "in_progress"
+    }
+  ],
+  "missions": [
+    {
+      "id": "M1",
+      "status": "done",
+      "subs": [
+        {
+          "id": "M1.1",
+          "status": "done"
+        },
+        {
+          "id": "M1.2",
+          "status": "done"
+        },
+        {
+          "id": "M1.3",
+          "status": "done"
+        },
+        {
+          "id": "M1.4",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "status": "done",
+      "subs": [
+        {
+          "id": "M2.1",
+          "status": "done"
+        },
+        {
+          "id": "M2.2",
+          "status": "done"
+        },
+        {
+          "id": "M2.3",
+          "status": "done"
+        },
+        {
+          "id": "M2.4",
+          "status": "done"
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "status": "waiting_proof",
+      "note": "Scene scripts authored locally; waiting Austin proof",
+      "subs": [
+        {
+          "id": "M3.1",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M3.2",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M3.3",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M3.4",
+          "status": "waiting_proof"
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "status": "waiting_proof",
+      "note": "Scene scripts authored locally; waiting Austin proof",
+      "subs": [
+        {
+          "id": "M4.1",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M4.2",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M4.3",
+          "status": "waiting_proof"
+        }
+      ]
+    },
+    {
+      "id": "M5",
+      "status": "waiting_proof",
+      "note": "Scene scripts authored locally; waiting Austin proof",
+      "subs": [
+        {
+          "id": "M5.1",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M5.2",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M5.3",
+          "status": "waiting_proof"
+        }
+      ]
+    },
+    {
+      "id": "M6",
+      "status": "waiting_proof",
+      "note": "Scene scripts authored locally; waiting Austin proof",
+      "subs": [
+        {
+          "id": "M6.1",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M6.2",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M6.3",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M6.4",
+          "status": "waiting_proof"
+        }
+      ]
+    },
+    {
+      "id": "M7",
+      "status": "waiting_proof",
+      "note": "Scene scripts authored locally; waiting Austin proof",
+      "subs": [
+        {
+          "id": "M7.1",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M7.2",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M7.3",
+          "status": "waiting_proof"
+        },
+        {
+          "id": "M7.4",
+          "status": "waiting_proof"
+        }
+      ]
+    }
+  ],
+  "naming": {
+    "policy": "True names design-only until Mission 6; in-game codenames before reveal",
+    "nephilim_player_visible": "M6.2",
+    "unborn_player_visible": "M6.3",
+    "pre_reveal_placeholders": [
+      "the entities",
+      "non-human",
+      "mission JARVIS codenames",
+      "wrong enemy"
+    ]
+  },
+  "shelved": {
+    "path": "shelved/",
+    "note": "Inactive older direction \u2014 combat feel, OWNER stub, source-docs. Not deleted.",
+    "active_campaign": "7-mission pack; Nephilim/The Unborn design names; dead-man Tony; Rhodey stand-in; M1 Drop + M2 Frame call-locked"
+  }
+}

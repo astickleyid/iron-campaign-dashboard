@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IRON / ULTIMATUM — Campaign Dashboard</title>
+<style>
+  :root {
+    --bg: #0b0e14; --panel: #121821; --panel2: #182131; --text: #e8eef7; --muted: #93a0b4;
+    --accent: #5b9dff; --gold: #e0b84a; --ok: #3ecf8e; --warn: #f0a33b; --idle: #6b778c;
+    --danger: #ff6b7a; --queued: #8b7cff; --border: #243044; --radius: 14px;
+    --font: "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font); color: var(--text); line-height: 1.45; min-height: 100vh;
+    background: radial-gradient(1200px 600px at 10% -10%, #1a2740 0%, var(--bg) 55%);
+  }
+  header {
+    padding: 28px 28px 12px; border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(24,33,49,.9), rgba(11,14,20,.2));
+    position: sticky; top: 0; z-index: 20; backdrop-filter: blur(10px);
+  }
+  header h1 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: .02em; }
+  header .sub { color: var(--muted); font-size: .95rem; }
+  header .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; align-items: center; }
+  a.pill, button.pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--text); text-decoration: none; font-size: .85rem; cursor: pointer;
+  }
+  a.pill:hover, button.pill:hover { border-color: var(--accent); color: #fff; }
+  a.pill.primary { background: #1b3a66; border-color: #3d6fb0; }
+  main { padding: 22px 28px 60px; max-width: 1100px; margin: 0 auto; }
+  .grid { display: grid; gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .card > summary, .card-head {
+    list-style: none; cursor: pointer; padding: 16px 18px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--panel2);
+  }
+  .card > summary::-webkit-details-marker { display: none; }
+  .card > summary:after { content: "▾"; color: var(--muted); font-size: .9rem; }
+  details[open].card > summary:after { content: "▴"; }
+  .card-body { padding: 14px 18px 18px; }
+  .title { font-weight: 650; font-size: 1.05rem; }
+  .meta { color: var(--muted); font-size: .82rem; }
+  .badge {
+    font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    padding: 4px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap;
+  }
+  .badge.not_started { background: #1a2030; color: var(--idle); border-color: #2a3348; }
+  .badge.in_progress { background: #3a2a12; color: var(--warn); border-color: #6a4a1a; }
+  .badge.done { background: #123528; color: var(--ok); border-color: #1f5a40; }
+  .badge.queued { background: #221a40; color: var(--queued); border-color: #4a3a7a; }
+  .badge.design { background: #1a2740; color: var(--accent); border-color: #2f4d7a; }
+  .badge.waiting_proof, .badge.waiting_austin_proof { background: #3a2a12; color: var(--warn); border-color: #6a4a1a; }
+  .build.waiting_proof, .build.waiting_austin_proof { border-color: #6a4a1a; box-shadow: inset 3px 0 0 var(--warn); }
+  .badge.design_in_progress { background: #1a2740; color: var(--accent); border-color: #2f4d7a; }
+  .badge.draft { background: #221a40; color: var(--queued); border-color: #4a3a7a; }
+  .subs { display: grid; gap: 10px; margin-top: 8px; }
+  .sub { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; background: #0e1420; }
+  .sub-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+  .sub h4 { margin: 0 0 4px; font-size: .95rem; }
+  .sub p { margin: 0; color: var(--muted); font-size: .85rem; }
+  .threads { display: grid; gap: 10px; }
+  .thread {
+    display: grid; grid-template-columns: 140px 1fr auto; gap: 12px; align-items: start;
+    padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: #0e1420;
+  }
+  .builds { display: grid; gap: 10px; }
+  .build {
+    display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start;
+    padding: 14px; border-radius: 12px; border: 1px solid var(--border); background: #0e1420;
+  }
+  .build.in_progress { border-color: #6a4a1a; box-shadow: inset 3px 0 0 var(--warn); }
+  .build.queued { border-color: #4a3a7a; box-shadow: inset 3px 0 0 var(--queued); }
+  .build.done { border-color: #1f5a40; box-shadow: inset 3px 0 0 var(--ok); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip {
+    font-size: .72rem; padding: 3px 8px; border-radius: 999px;
+    background: #1a2740; border: 1px solid #2f4d7a; color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .thread { grid-template-columns: 1fr; }
+    main, header { padding-left: 16px; padding-right: 16px; }
+  }
+  .thread strong, .build strong { color: var(--gold); }
+  .links { display: grid; gap: 8px; }
+  .links a { color: var(--accent); word-break: break-all; }
+  .note {
+    margin-top: 10px; padding: 10px 12px; border-radius: 10px;
+    background: #151c2a; color: var(--muted); font-size: .85rem; border: 1px dashed #30405c;
+  }
+  footer { color: var(--muted); font-size: .8rem; padding: 8px 0 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+  .shelf-card { border-color: #a67c00; background: rgba(166,124,0,0.08); }
+</style>
+</head>
+<body>
+<header>
+  <h1>IRON / ULTIMATUM — Campaign Dashboard</h1>
+  <div class="sub">Live agent builds · 7 missions / 26 subs · design authoring (not Dock-shipped)</div>
+  <div class="row" id="prPills">
+    <a class="pill" href="https://github.com/astickleyid/iron_ultimatum/pull/1" target="_blank" rel="noopener" title="Combat controls + ControlGuide (Dock 0.1.71) — DRAFT, do not merge · waiting Austin playtest stick">PR #1 Combat</a>
+    <a class="pill primary" href="https://github.com/astickleyid/iron_ultimatum/pull/2" target="_blank" rel="noopener" title="CampaignStory pack — M1/M2 lock, VO, scene scripts (DRAFT)">PR #2 Story</a>
+    <a class="pill" href="https://github.com/astickleyid/iron_ultimatum/pull/3" target="_blank" rel="noopener" title="Ops UI — The Drop / The Frame board + Legacy Test Suite (DRAFT) · waiting Austin review/ship">PR #3 Ops UI</a>
+    <a class="pill" href="https://github.com/astickleyid/iron_ultimatum/pull/4" target="_blank" rel="noopener" title="DualSense ControlGuide — remap, context prompts, boot skip (DRAFT) · not Unity-playtested">PR #4 DualSense</a>
+    <a class="pill" id="liveDashPill" href="#" title="Live dashboard URL pending deploy">Live dashboard (pending)</a>
+    <a class="pill" href="file:///Volumes/GameStudio/Unity/Projects/IRON-HDRP/Documentation/CampaignStory/STORY-BIBLE.md">Story Bible</a>
+    <a class="pill" href="file:///Users/astickley/Desktop/IRON-CampaignStory/">Desktop folder</a>
+    <button class="pill" type="button" id="reloadStatus">Refresh status</button>
+  </div>
+  <div class="legend">
+    <span class="badge queued">queued</span>
+    <span class="badge in_progress">in progress</span>
+    <span class="badge done">done</span>
+    <span class="badge not_started">not started</span>
+    <span class="badge design">design authoring</span>
+    <span class="badge waiting_proof">waiting proof</span>
+  </div>
+</header>
+<main class="grid">
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <div class="title">Active agent builds</div>
+        <div class="meta">From <code>campaign-status.json</code> · auto-refreshes every 20s · new builds appear when status file is updated</div>
+      </div>
+      <span class="badge design" id="buildsBadge">live</span>
+    </div>
+    <div class="card-body">
+      <div class="builds" id="agentBuilds"></div>
+      <div class="note" id="buildsNote">Waiting for agentBuilds in campaign-status.json…</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <div class="title">Pull requests</div>
+        <div class="meta">Draft only · no merge · no combat Phase 2/3 · no spend</div>
+      </div>
+      <span class="badge draft" id="prBadge">draft</span>
+    </div>
+    <div class="card-body">
+      <div class="builds" id="pullRequests"></div>
+      <div class="note" id="prNote">Waiting for pullRequests in campaign-status.json…</div>
+    </div>
+  </section>
+
+  <section class="card shelf-card">
+    <div class="card-head">
+      <div>
+        <div class="title">Shelved / inactive</div>
+        <div class="meta">Not deleted — older direction, not the active 7-mission campaign</div>
+      </div>
+      <span class="badge not_started">shelved</span>
+    </div>
+    <div class="card-body">
+      <div class="note"><strong>Active:</strong> FULL-MISSION-SET · STORY-BIBLE · BEAT-SHEET · README · DEEPEN-NOTES · this dashboard · campaign-status.json<br>
+      <strong>Call-locked spine:</strong> Nephilim / The Unborn (design names; placeholders until M6.2 / M6.3) · dead-man Tony · Rhodey stand-in · M1 The Drop · M2 The Frame</div>
+      <ul style="margin:8px 0 0 18px;line-height:1.5;color:var(--muted);font-size:.9rem">
+        <li><code>shelved/00-SHELF-NOTE.md</code> — shelf rules</li>
+        <li><code>shelved/COMBAT-BODY-FEEL.md</code> · <code>shelved/AERIAL-GRAB-THROW-FEEL.md</code></li>
+        <li><code>shelved/OWNER.md</code> · <code>shelved/source-docs/</code></li>
+        <li><code>archive/2026-10-07-pre-7mission/</code> — superseded story packs</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <div class="title">Story threads</div>
+        <div class="meta">Nephilim (M6.2) · The Unborn (M6.3) · codenames before — Government · Terrorists · Tony</div>
+      </div>
+      <span class="badge design" id="packBadge">design authoring</span>
+    </div>
+    <div class="card-body threads" id="threads"></div>
+  </section>
+
+  <section>
+    <div class="title" style="margin:6px 0 10px">Missions <span class="meta" id="missionCount"></span></div>
+    <div class="grid" id="missions"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <div class="title">Active docs &amp; archive</div>
+        <div class="meta">Old packs archived · feel/OWNER shelved</div>
+      </div>
+    </div>
+    <div class="card-body links">
+      <div><strong>GameStudio</strong><br />
+        <a href="file:///Volumes/GameStudio/Unity/Projects/IRON-HDRP/Documentation/CampaignStory/">/Volumes/GameStudio/Unity/Projects/IRON-HDRP/Documentation/CampaignStory/</a>
+      </div>
+      <div><strong>Desktop mirror</strong><br />
+        <a href="file:///Users/astickley/Desktop/IRON-CampaignStory/">/Users/astickley/Desktop/IRON-CampaignStory/</a>
+      </div>
+      <div><strong>GitHub PRs</strong><br />
+        <a href="https://github.com/astickleyid/iron_ultimatum/pull/1" target="_blank" rel="noopener">#1 Combat Dock 0.1.71</a> ·
+        <a href="https://github.com/astickleyid/iron_ultimatum/pull/2" target="_blank" rel="noopener">#2 Story</a> ·
+        <a href="https://github.com/astickleyid/iron_ultimatum/pull/3" target="_blank" rel="noopener">#3 Ops UI</a> ·
+        <a href="https://github.com/astickleyid/iron_ultimatum/pull/4" target="_blank" rel="noopener">#4 DualSense</a>
+      </div>
+      <div><strong>Live dashboard</strong><br />
+        <span id="liveDashLink">pending deploy (public free host)</span>
+      </div>
+      <div class="note" id="nameNote"><strong>In-game naming:</strong> Nephilim / The Unborn are design-doc names. Player text uses codenames until <strong>M6.2</strong> (Nephilim) and <strong>M6.3</strong> (The Unborn).</div>
+      <div class="note" id="statusNote">Status loads from campaign-status.json beside this file. Click Refresh or wait for auto-poll.</div>
+      <div class="note"><strong>How new agent builds appear:</strong> when Campaign starts a mission build, it appends an entry to <code>agentBuilds</code> in <code>campaign-status.json</code> and sets mission/sub statuses. This dashboard picks it up on Refresh / auto-poll — no HTML edit required.</div>
+    </div>
+  </section>
+  <footer>IRON — Fracture Protocol · ULTIMATUM working label · Campaign dashboard · Updated 2026-10-07</footer>
+</main>
+<script>
+const DATA = {
+  updated: "2026-10-07",
+  agentBuilds: [],
+  pullRequests: [],
+  liveDashboardUrl: null,
+  threads: [
+    { id: "nephilim", name: "Nephilim", blurb: "Design name only until reveal. In-game: the entities / codenames. True name player-visible at M6.2.", status: "not_started", unlock: "M6.2 name reveal" },
+    { id: "unborn", name: "The Unborn", blurb: "Design name only until reveal. In-game: the thing they fear / wrong enemy. True name player-visible at M6.3.", status: "not_started", unlock: "M6.3 name reveal" },
+    { id: "government", name: "Government", blurb: "Middleman that found one message and treated it like a treasure map.", status: "not_started", unlock: "Pieces M2–M5; full middleman M6" },
+    { id: "terrorists", name: "Terrorists", blurb: "Are the government — researchers manufactured into extremists.", status: "not_started", unlock: "Late — not solved in M1–M4" },
+    { id: "tony", name: "Tony", blurb: "Dead-man cover in M2; first builder without Nephilim help; builds a door, not a weapon.", status: "in_progress", unlock: "Whole campaign" },
+    { id: "frame", name: "Stark-tech frame", blurb: "Dead + guilty press story; body double / burned suit; manhunt dies; later Stark-parts crash.", status: "not_started", unlock: "M1 rooftop → M2 dead-man" },
+    { id: "sensor", name: "Misplaced sensor", blurb: "Shockwave mis-drop; transmitter fried; block-level unknown in M1; smoking-gun race in M3.", status: "not_started", unlock: "M1 unknown → M3 race" }
+  ],
+  missions: [
+    {
+      id: "M1", name: "The Drop", status: "not_started",
+      arc: "12-sensor NYC grid · terror with 2–3 left · shockwave mis-drop · unmarked vans · rooftop \"Stark.\"",
+      subs: [
+        { id: "M1.1", name: "Plant the Grid", space: "NYC Harbor Contact Arc — harbor / underwater / early rooftops", objective: "Start the 12-sensor UAP grid quiet", status: "not_started" },
+        { id: "M1.2", name: "Two Left When It Hits", space: "Midtown mid-grid (Herald → Times) + sky lanes", objective: "Keep planting; push through staged terror with 2–3 left", status: "not_started" },
+        { id: "M1.3", name: "Shockwave Drop", space: "Shockwave-tilted Midtown rooftop", objective: "Finish 12th sensor; mis-drop fries transmitter to block-level only", status: "not_started" },
+        { id: "M1.4", name: "Sealed Block, \"Stark.\"", space: "Same rooftop over sealed contact block", objective: "Watch unmarked vans before FD; JARVIS logs unknown; \"Stark.\" pulse", status: "not_started" }
+      ]
+    },
+    {
+      id: "M2", name: "The Frame", status: "not_started",
+      arc: "Dead & guilty · matte-black ghost flights · funeral / academy frequency · Rhodey stand-in · flying-risk → M4.",
+      subs: [
+        { id: "M2.1", name: "Dead & Guilty", space: "Avengers Tower sealed upper floors / dark workshop", objective: "Hide as dead man; keep systems alive quiet", status: "not_started" },
+        { id: "M2.2", name: "Ghost Flights", space: "Midtown / harbor night sky lanes over sealed block", objective: "Matte-black recon; JARVIS spoofs as choppers / Coast Guard / drones", status: "not_started" },
+        { id: "M2.3", name: "Funeral Frequency", space: "Funeral perimeter → academy-days channel", objective: "Rhodey at funeral first; open old frequency; first contact", status: "not_started" },
+        { id: "M2.4", name: "Stand-In", space: "Rhodey's place + Tower AF-custody floors + public Iron Man corridor", objective: "Rhodey as public Iron Man (cadence + gesture); trail to sealed-block sensor", status: "not_started" }
+      ]
+    },
+    {
+      id: "M3", name: "The Sensor", status: "not_started",
+      arc: "Reach the smoking-gun sensor before holders read it — via someone trusted who may be caught or turned.",
+      subs: [
+        { id: "M3.1", name: "Call in a Friend", space: "Chelsea encrypted contact route / sky-bridge", objective: "Brief trusted ally; start sealed-block sensor race", status: "not_started" },
+        { id: "M3.2", name: "Sweep Zone Breach", space: "Hudson Contact Corridor lockdown", objective: "Break cordon to mis-drop footprint", status: "not_started" },
+        { id: "M3.3", name: "Turned Wire", space: "East River yards restricted corridor", objective: "Save ally / channel when wire flips", status: "not_started" },
+        { id: "M3.4", name: "Smoking Gun Out", space: "Sweep vault barge / water-edge hangar", objective: "Recover sensor before full read", status: "not_started" }
+      ]
+    },
+    {
+      id: "M4", name: "Walls", status: "not_started",
+      arc: "Still chasing the frame. Hit walls. Learn pieces. Flying-risk from M2 may surface. No full reveal.",
+      subs: [
+        { id: "M4.1", name: "Debris Trail", space: "Brooklyn Navy Yard docks / cargo spine", objective: "Follow material toward unmapped hole", status: "not_started" },
+        { id: "M4.2", name: "Manufactured Cell", space: "Outer Midtown alleged terror safehouse", objective: "Prove cell real or fake", status: "not_started" },
+        { id: "M4.3", name: "Wall After Wall", space: "Midtown black-site annex / dead-end vaults", objective: "Take one usable piece; accept the wall", status: "not_started" }
+      ]
+    },
+    {
+      id: "M5", name: "Wrong Enemy", status: "not_started",
+      arc: "Uncover a non-human compartment. Assume they are the enemy. Push toward them.",
+      subs: [
+        { id: "M5.1", name: "Cold Room", space: "Unmapped facility core / cold vault", objective: "Breach hole; see non-human material", status: "not_started" },
+        { id: "M5.2", name: "Wrong Thesis", space: "Midtown sky-lane hunt", objective: "Track / confront non-human \"enemy\"", status: "not_started" },
+        { id: "M5.3", name: "Knock on Silence", space: "Quiet-era threshold / dead acoustic chamber", objective: "Force contact; drop kill posture", status: "not_started" }
+      ]
+    },
+    {
+      id: "M6", name: "Nephilim / The Unborn", status: "not_started",
+      arc: "Path through those framing him · Nephilim · The Unborn · why Tony's unpredictability matters.",
+      subs: [
+        { id: "M6.1", name: "Through the Framers", space: "Government middleman hub / message vault", objective: "Walk through framers; force admission", status: "not_started" },
+        { id: "M6.2", name: "The Nephilim", space: "Quiet-era refuge / contact chamber", objective: "Name Nephilim first player-visible; hear who they are", status: "not_started" },
+        { id: "M6.3", name: "Collection", space: "Archive / pyramid projection / 1945 gallery", objective: "Name The Unborn first player-visible; collection not salvation", status: "not_started" },
+        { id: "M6.4", name: "Unpredictable Variable", space: "Middleman kill-floor + Nephilim chamber linked", objective: "Refuse every clean script; door seed", status: "not_started" }
+      ]
+    },
+    {
+      id: "M7", name: "The Door", status: "not_started",
+      arc: "Not a weapon — a door. Open, not efficient. Leave one thing unlocked.",
+      subs: [
+        { id: "M7.1", name: "Refuse the Clean Kill", space: "Tower forge + Midtown range", objective: "Reject weapon; start door", status: "not_started" },
+        { id: "M7.2", name: "Design the Door", space: "Tower forge → Midtown test corridor", objective: "Stress-test open path", status: "not_started" },
+        { id: "M7.3", name: "Seal Instinct", space: "Nephilim threshold × Midtown faultline", objective: "Hold open against forever-seal", status: "not_started" },
+        { id: "M7.4", name: "One Thing Unlocked", space: "The Door final arena", objective: "Finish; leave one thing unlocked", status: "not_started" }
+      ]
+    }
+  ]
+};
+
+function badge(status) {
+  const s = status || "not_started";
+  return `<span class="badge ${s}">${String(s).replace(/_/g, " ")}</span>`;
+}
+
+function renderPullRequests(prs) {
+  const el = document.getElementById("pullRequests");
+  const note = document.getElementById("prNote");
+  if (!prs || !prs.length) {
+    el.innerHTML = "";
+    note.textContent = "No pullRequests listed in campaign-status.json.";
+    return;
+  }
+  note.innerHTML = `<strong>${prs.length}</strong> open drafts · blocked on Austin gates`;
+  el.innerHTML = prs.map(p => `
+    <div class="build draft">
+      <div>
+        <strong><a href="${p.url}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">PR #${p.number}</a> — ${p.title || ""}</strong>
+        <div class="meta"><strong>Blocked on:</strong> ${p.blockedOn || "—"}</div>
+        <div class="meta"><strong>Austin needs:</strong> ${p.austinNeeds || "—"}</div>
+      </div>
+      ${badge(p.status || "draft")}
+    </div>`).join("");
+}
+
+function applyLiveUrl(url) {
+  const pill = document.getElementById("liveDashPill");
+  const link = document.getElementById("liveDashLink");
+  if (url) {
+    if (pill) { pill.href = url; pill.textContent = "Live dashboard"; pill.classList.add("primary"); }
+    if (link) { link.innerHTML = `<a href="${url}" target="_blank" rel="noopener">${url}</a>`; }
+  } else {
+    if (pill) { pill.href = "#"; pill.textContent = "Live dashboard (pending)"; pill.removeAttribute("target"); }
+    if (link) { link.textContent = "pending deploy (public free host)"; }
+  }
+}
+
+function renderBuilds(builds) {
+  const el = document.getElementById("agentBuilds");
+  const note = document.getElementById("buildsNote");
+  if (!builds || !builds.length) {
+    el.innerHTML = "";
+    note.textContent = "No agent builds listed. When Campaign starts one, it appears here from campaign-status.json.";
+    return;
+  }
+  const order = { in_progress: 0, waiting_austin_proof: 0, waiting_proof: 0, queued: 1, done: 2 };
+  const sorted = [...builds].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9));
+  const waiting = sorted.filter(b => b.status === "waiting_austin_proof" || b.status === "waiting_proof").length;
+  note.innerHTML = `<strong>${sorted.filter(b => b.status === "in_progress").length}</strong> in progress · <strong>${waiting}</strong> waiting proof · <strong>${sorted.filter(b => b.status === "queued").length}</strong> queued · <strong>${sorted.filter(b => b.status === "done").length}</strong> done`;
+  el.innerHTML = sorted.map(b => {
+    const chips = [...(b.missions || []), ...(b.subs || [])].map(x => `<span class="chip">${x}</span>`).join("");
+    const detail = [b.focus, b.task, b.note].filter(Boolean).join(" · ");
+    return `<div class="build ${b.status || "queued"}">
+      <div>
+        <strong>${b.name || b.id}</strong>
+        <div class="meta">${b.agent || "agent"}${detail ? " · " + detail : ""}</div>
+        <div class="chips">${chips || '<span class="chip">pack / folder</span>'}</div>
+      </div>
+      ${badge(b.status)}
+    </div>`;
+  }).join("");
+}
+
+function renderThreads(threads) {
+  document.getElementById("threads").innerHTML = threads.map(t => `
+    <div class="thread">
+      <strong>${t.name}</strong>
+      <div>
+        <div>${t.blurb}</div>
+        <div class="meta">Unlock: ${t.unlock || ""}</div>
+      </div>
+      ${badge(t.status)}
+    </div>`).join("");
+}
+
+function renderMissions(missions) {
+  const totalSubs = missions.reduce((n, m) => n + m.subs.length, 0);
+  document.getElementById("missionCount").textContent = `· ${missions.length} missions · ${totalSubs} subs`;
+  document.getElementById("missions").innerHTML = missions.map(m => {
+    const done = m.subs.filter(s => s.status === "done").length;
+    const prog = m.subs.filter(s => s.status === "in_progress" || s.status === "waiting_proof" || s.status === "waiting_austin_proof").length;
+    return `
+    <details class="card" ${(m.status === "in_progress" || m.status === "waiting_proof" || m.status === "waiting_austin_proof") ? "open" : ""}>
+      <summary>
+        <div>
+          <div class="title">${m.id} — ${m.name}</div>
+          <div class="meta">${m.arc} · ${done} done · ${prog} in progress · ${m.subs.length} subs</div>
+        </div>
+        ${badge(m.status)}
+      </summary>
+      <div class="card-body">
+        <div class="subs">
+          ${m.subs.map(s => `
+            <div class="sub">
+              <div class="sub-top">
+                <div>
+                  <h4>${s.id} — ${s.name}</h4>
+                  <p><strong>Space:</strong> ${s.space || ""}</p>
+                  <p><strong>Objective:</strong> ${s.objective || ""}</p>
+                </div>
+                ${badge(s.status)}
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>
+    </details>`;
+  }).join("");
+}
+
+function applyStatusPayload(payload) {
+  if (!payload) return;
+  if (payload.pullRequests) DATA.pullRequests = payload.pullRequests;
+  applyLiveUrl(payload.liveDashboardUrl || null);
+  if (payload.agentBuilds) DATA.agentBuilds = payload.agentBuilds;
+  if (payload.threads) {
+    const map = Object.fromEntries(payload.threads.map(t => [t.id, t]));
+    DATA.threads = DATA.threads.map(t => ({ ...t, ...(map[t.id] || {}) }));
+  }
+  if (payload.missions) {
+    const mmap = Object.fromEntries(payload.missions.map(m => [m.id, m]));
+    DATA.missions = DATA.missions.map(m => {
+      const inc = mmap[m.id];
+      if (!inc) return m;
+      const smap = Object.fromEntries((inc.subs || []).map(s => [s.id, s]));
+      return { ...m, ...inc, name: m.name, arc: m.arc, subs: m.subs.filter(s => smap[s.id] || true).map(s => {
+        // drop subs removed from status (e.g. ghost M4.4)
+        if (inc.subs && !smap[s.id] && m.id === "M4" && s.id === "M4.4") return null;
+        return { ...s, ...(smap[s.id] || {}) };
+      }).filter(Boolean) };
+    });
+    // also filter M4.4 if still in embedded
+    DATA.missions = DATA.missions.map(m => m.id !== "M4" ? m : ({ ...m, subs: m.subs.filter(s => s.id !== "M4.4") }));
+  }
+  if (payload.updated) DATA.updated = payload.updated;
+  document.getElementById("statusNote").innerHTML =
+    `Live status loaded · last updated <strong>${DATA.updated}</strong>. Agent builds + mission progress come from <code>campaign-status.json</code>.`;
+}
+
+async function loadLiveStatus() {
+  const tried = [];
+  for (const url of ["./campaign-status.json", "campaign-status.json"]) {
+    tried.push(url);
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) continue;
+      applyStatusPayload(await res.json());
+      render();
+      return;
+    } catch (_) {}
+  }
+  document.getElementById("statusNote").textContent =
+    "Using embedded defaults. Place campaign-status.json beside this HTML. Tried: " + tried.join(", ");
+  render();
+}
+
+function render() {
+  renderBuilds(DATA.agentBuilds);
+  renderPullRequests(DATA.pullRequests || []);
+  renderThreads(DATA.threads);
+  renderMissions(DATA.missions);
+}
+
+document.getElementById("reloadStatus").addEventListener("click", loadLiveStatus);
+render();
+loadLiveStatus();
+setInterval(loadLiveStatus, 20000);
+</script>
+</body>
+</html>
