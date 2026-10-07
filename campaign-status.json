@@ -1,8 +1,16 @@
 {
-  "updated": "2026-10-07T01:15:43-04:00",
+  "updated": "2026-10-07T01:17:30-04:00",
   "pack": "7-mission dense + M1/M2 call lock",
   "liveDashboardUrl": "https://astickleyid.github.io/iron-campaign-dashboard/",
   "agentBuilds": [
+    {
+      "id": "m1-dock-field",
+      "label": "M1 Dock \u2014 The Drop field",
+      "status": "in_progress",
+      "owner": "M1 Dock",
+      "note": "Pass 1 plant/grid \u00b7 full M1.1\u2013M1.4 phased \u00b7 bc-5a626cf0 \u00b7 tip 6428b6fc \u00b7 draft PR pending \u00b7 Campaign review before Austin",
+      "mission": "M1"
+    },
     {
       "id": "build-m1-m2-call-lock",
       "name": "Mission 1 The Drop + Mission 2 The Frame",
@@ -22,9 +30,10 @@
         "M2.3",
         "M2.4"
       ],
-      "focus": "M1 Drop + M2 Frame call lock written into pack",
+      "focus": "M1/M2 call lock \u2014 design done (field slice now owned by M1 Dock)",
       "started": "2026-10-07T00:51:00-04:00",
-      "finished": "2026-10-07T00:55:00-04:00"
+      "finished": "2026-10-07T00:55:00-04:00",
+      "note": "Design authoring done; live Dock field work is m1-dock-field"
     },
     {
       "id": "dialogue-draft-m1-m2",
@@ -101,9 +110,10 @@
       "id": "dashboard-keeper",
       "name": "Campaign dashboard keeper",
       "agent": "Campaign",
-      "status": "in_progress",
+      "status": "done",
       "agentId": "7610954e-d7f6-4abe-be04-a4b0ba0ef127",
-      "focus": "Live status + public static dashboard"
+      "focus": "Live status + public static dashboard",
+      "note": "Live https://astickleyid.github.io/iron-campaign-dashboard/ \u00b7 free Pages \u00b7 Campaign verified URL+JSON"
     }
   ],
   "pullRequests": [
@@ -181,15 +191,15 @@
   "missions": [
     {
       "id": "M1",
-      "status": "done",
+      "status": "in_progress",
       "subs": [
         {
           "id": "M1.1",
-          "status": "done"
+          "status": "in_progress"
         },
         {
           "id": "M1.2",
-          "status": "done"
+          "status": "in_progress"
         },
         {
           "id": "M1.3",
@@ -199,7 +209,8 @@
           "id": "M1.4",
           "status": "done"
         }
-      ]
+      ],
+      "note": "Design call-lock done; M1 Dock owns field slice (in progress). Combat 0.1.71 is separate."
     },
     {
       "id": "M2",
@@ -346,5 +357,13 @@
     "path": "shelved/",
     "note": "Inactive older direction \u2014 combat feel, OWNER stub, source-docs. Not deleted.",
     "active_campaign": "7-mission pack; Nephilim/The Unborn design names; dead-man Tony; Rhodey stand-in; M1 Drop + M2 Frame call-locked"
-  }
+  },
+  "reporting": {
+    "rule": "Campaign reviews first. Escalate bigger/risky/ambiguous to Austin only. Trivial dashboard syncs \u2192 Campaign only (no Austin ping)."
+  },
+  "notes": {
+    "m1": "M1 Dock agent owns The Drop field slice (in progress). Separate from combat Dock 0.1.71.",
+    "combatDock": "Dock 0.1.71 tip 6428b6fc open on Mac Studio \u2014 combat PR #1, not M1."
+  },
+  "updatedNote": "Campaign review: Pages live; M1 Dock Pass1 in progress; combat Dock 0.1.71 open"
 }
